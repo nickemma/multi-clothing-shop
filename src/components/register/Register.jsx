@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
 import './register.scss';
-
+import { UserContext } from '../../services/UserContext';
 import {
   createAuthWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -18,6 +18,8 @@ const initialState = {
 const Register = () => {
   const [formField, setFormField] = useState(initialState);
   const { displayName, email, password, confirmPassword } = formField;
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -41,6 +43,7 @@ const Register = () => {
 
     try {
       const { user } = await createAuthWithEmailAndPassword(email, password);
+      setCurrentUser(user);
 
       await createUserDocumentFromAuth(user, { displayName });
       resetForm();
