@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
 import './register.scss';
-
 import {
   createAuthWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -41,7 +40,6 @@ const Register = () => {
 
     try {
       const { user } = await createAuthWithEmailAndPassword(email, password);
-
       await createUserDocumentFromAuth(user, { displayName });
       resetForm();
     } catch (error) {

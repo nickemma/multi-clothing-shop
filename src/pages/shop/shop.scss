@@ -1,0 +1,6 @@
+.products-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
+  gap: 2.5rem;
+  padding: 2rem 5%;
+}

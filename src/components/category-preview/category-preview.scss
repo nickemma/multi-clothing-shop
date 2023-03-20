@@ -1,0 +1,22 @@
+.category-preview-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+
+  .title {
+    margin-bottom: 25px;
+    cursor: pointer;
+    padding-left: 5%;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  .preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
+    gap: 2.5rem;
+    padding: 2rem 5%;
+  }
+}
