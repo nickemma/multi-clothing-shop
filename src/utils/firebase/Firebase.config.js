@@ -40,7 +40,7 @@ provider.setCustomParameters({
 });
 
 // Get the auth and call it
-export const auth = getAuth();
+export const auth = getAuth(app);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 // Create a user and get it from firebase store
