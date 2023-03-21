@@ -11,6 +11,12 @@
   right: 40px;
   z-index: 5;
 
+  .cart {
+    text-align: center;
+    font-size: 2rem;
+    font-style: italic;
+  }
+
   .empty-message {
     font-size: 18px;
     margin: 50px auto;
