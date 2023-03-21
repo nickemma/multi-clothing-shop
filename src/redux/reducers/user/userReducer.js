@@ -4,7 +4,7 @@ const InitialState = {
   currentUser: null,
 };
 
-export const userReducer = (state = InitialState, action) => {
+export const userReducer = (state = InitialState, action = {}) => {
   const { type, payload } = action;
 
   switch (type) {

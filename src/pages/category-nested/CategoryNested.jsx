@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CategoryPreview from '../../components/category-preview/CategoryPreview';
-import { CategoriesContext } from '../../services/CategoryContext';
+import { useSelector } from 'react-redux';
 
 const CategoryNested = () => {
-  const { categoriesMap } = useContext(CategoriesContext);
+  const categoriesMap = useSelector((state) => state.categories.categoriesMap);
 
   return (
     <>
