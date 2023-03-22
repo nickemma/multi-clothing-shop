@@ -64,7 +64,6 @@ export const getCollectionAndDocument = async () => {
   const collectionRef = collection(db, 'categories');
   const uniqueQuery = query(collectionRef);
   const querySnapShop = await getDocs(uniqueQuery);
-
   const categoryMap = querySnapShop.docs.reduce((acc, docSnapShot) => {
     const { title, items } = docSnapShot.data();
     acc[title.toLowerCase()] = items;
