@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
+import { useNavigate } from 'react-router-dom';
 import './register.scss';
 import {
   createAuthWithEmailAndPassword,
@@ -15,6 +16,7 @@ const initialState = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formField, setFormField] = useState(initialState);
   const { displayName, email, password, confirmPassword } = formField;
 
@@ -42,6 +44,7 @@ const Register = () => {
       const { user } = await createAuthWithEmailAndPassword(email, password);
       await createUserDocumentFromAuth(user, { displayName });
       resetForm();
+      navigate('/');
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         alert('User already exist');

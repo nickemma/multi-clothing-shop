@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
 import './login.scss';
@@ -13,6 +14,7 @@ const initialState = {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   const logUserGoogle = async () => {
     await signInWithGooglePopup();
   };
@@ -35,6 +37,7 @@ const Login = () => {
       await signInAuthWithEmailAndPassword(email, password);
 
       resetForm();
+      navigate('/');
     } catch (error) {
       if (error.code === 'auth/wrong-password') {
         alert('Invalid credentials');
