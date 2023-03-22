@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
-import './checkout.scss';
-import { CartContext } from '../../services/CartContext';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import {
+  selectCartItems,
+  selectCartTotal,
+} from '../../redux/actions/cart/cartSelector';
 import CheckoutItem from '../../components/checkout-item/Checkout.item';
+import './checkout.scss';
 
 const Checkout = () => {
-  const { cartItems, totalCartCount } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
+  const totalCartCount = useSelector(selectCartTotal);
 
   return (
     <div className="checkout-container">
