@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
+import { useDispatch } from 'react-redux';
 import './login.scss';
 import {
-  signInWithGooglePopup,
-  signInAuthWithEmailAndPassword,
-} from '../../utils/firebase/Firebase.config';
+  googleSignInStart,
+  emailSignInStart,
+} from '../../redux/actions/user/userAction';
 
 const initialState = {
   email: '',
@@ -14,9 +15,11 @@ const initialState = {
 };
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const logUserGoogle = async () => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
+    navigate('/');
   };
 
   const [formField, setFormField] = useState(initialState);
@@ -34,7 +37,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInAuthWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
 
       resetForm();
       navigate('/');

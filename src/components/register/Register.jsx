@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import FormInput from '../form-input/FormInput';
 import Button from '../button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signUpStart } from '../../redux/actions/user/userAction';
 import './register.scss';
-import {
-  createAuthWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from '../../utils/firebase/Firebase.config';
 
 const initialState = {
   displayName: '',
@@ -16,6 +14,7 @@ const initialState = {
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formField, setFormField] = useState(initialState);
   const { displayName, email, password, confirmPassword } = formField;
@@ -41,8 +40,7 @@ const Register = () => {
     }
 
     try {
-      const { user } = await createAuthWithEmailAndPassword(email, password);
-      await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email, password, displayName));
       resetForm();
       navigate('/');
     } catch (error) {
