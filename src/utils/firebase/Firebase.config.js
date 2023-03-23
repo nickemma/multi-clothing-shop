@@ -73,7 +73,10 @@ export const getCollectionAndDocument = async () => {
 };
 
 // Create a user with google sign In
-export const createUserDocumentFromAuth = async (userAuth, additional) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalDetails
+) => {
   const userRef = doc(db, 'users', userAuth.uid);
   const userSnapShot = await getDoc(userRef);
 
@@ -85,13 +88,13 @@ export const createUserDocumentFromAuth = async (userAuth, additional) => {
         displayName,
         email,
         createdAt,
-        ...additional,
+        ...additionalDetails,
       });
     } catch (error) {
       console.error(error);
     }
   }
-  return userRef;
+  return userSnapShot;
 };
 
 // Create a user with email and password
@@ -115,3 +118,17 @@ export const signUserOut = async () => await signOut(auth);
 // leverage the single thread to create observer and manage user account for optimization
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+// leverage the single thread to convert from observer to redux saga for memoization
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
