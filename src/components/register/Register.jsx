@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import FormInput from '../form-input/FormInput';
-import Button from '../button/Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signUpStart } from '../../redux/actions/user/userAction';
-import './register.scss';
+import Button from '../button/Button';
+import { SignUpContainer } from './register.style';
 
 const initialState = {
   displayName: '',
@@ -53,7 +53,7 @@ const Register = () => {
   };
 
   return (
-    <div className="sign-up-container">
+    <SignUpContainer>
       <h2>Don't have an account Register here...</h2>
       <span>Register with your Email and Password</span>
       <form onSubmit={handleSubmit}>
@@ -94,7 +94,7 @@ const Register = () => {
         />
         <Button type="submit">Sign Up</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 
