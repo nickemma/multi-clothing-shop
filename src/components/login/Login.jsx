@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../form-input/FormInput';
-import Button from '../button/Button';
-import './login.scss';
+import { useDispatch } from 'react-redux';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/Button';
+import { SignInContainer, ButtonsContainer } from './login.style';
 import {
-  signInWithGooglePopup,
-  signInAuthWithEmailAndPassword,
-} from '../../utils/firebase/Firebase.config';
+  googleSignInStart,
+  emailSignInStart,
+} from '../../redux/actions/user/userAction';
 
 const initialState = {
   email: '',
@@ -13,8 +15,11 @@ const initialState = {
 };
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logUserGoogle = async () => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
+    navigate('/');
   };
 
   const [formField, setFormField] = useState(initialState);
@@ -32,9 +37,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInAuthWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
 
       resetForm();
+      navigate('/');
     } catch (error) {
       if (error.code === 'auth/wrong-password') {
         alert('Invalid credentials');
@@ -47,7 +53,7 @@ const Login = () => {
   };
 
   return (
-    <div className="sign-in-container">
+    <SignInContainer>
       <h2>Already have an account, Login here...</h2>
       <span>Login with your Email and Password</span>
       <form onSubmit={handleSubmit}>
@@ -68,14 +74,18 @@ const Login = () => {
           value={password}
           onChange={handleChange}
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
-          <Button type="button" buttonType="google" onClick={logUserGoogle}>
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={logUserGoogle}
+          >
             Google Sign In
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 

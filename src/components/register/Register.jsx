@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import FormInput from '../form-input/FormInput';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signUpStart } from '../../redux/actions/user/userAction';
 import Button from '../button/Button';
-import './register.scss';
-import {
-  createAuthWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from '../../utils/firebase/Firebase.config';
+import { SignUpContainer } from './register.style';
 
 const initialState = {
   displayName: '',
@@ -15,6 +14,8 @@ const initialState = {
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formField, setFormField] = useState(initialState);
   const { displayName, email, password, confirmPassword } = formField;
 
@@ -39,9 +40,9 @@ const Register = () => {
     }
 
     try {
-      const { user } = await createAuthWithEmailAndPassword(email, password);
-      await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email, password, displayName));
       resetForm();
+      navigate('/');
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         alert('User already exist');
@@ -52,7 +53,7 @@ const Register = () => {
   };
 
   return (
-    <div className="sign-up-container">
+    <SignUpContainer>
       <h2>Don't have an account Register here...</h2>
       <span>Register with your Email and Password</span>
       <form onSubmit={handleSubmit}>
@@ -93,7 +94,7 @@ const Register = () => {
         />
         <Button type="submit">Sign Up</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 

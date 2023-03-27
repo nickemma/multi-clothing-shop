@@ -1,18 +1,24 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CategoryPreview from '../../components/category-preview/CategoryPreview';
-import { CategoriesContext } from '../../services/CategoryContext';
+import { useSelector } from 'react-redux';
+import Spinner from '../../components/spinner/Spinner';
 
 const CategoryNested = () => {
-  const { categoriesMap } = useContext(CategoriesContext);
+  const categoriesMap = useSelector((state) => state.categories.categoriesMap);
+  const isLoading = useSelector((state) => state.categories.isLoading);
 
   return (
     <>
-      {Object.keys(categoriesMap).map((title) => {
-        const products = categoriesMap[title];
-        return (
-          <CategoryPreview key={title} title={title} products={products} />
-        );
-      })}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        Object.keys(categoriesMap).map((title) => {
+          const products = categoriesMap[title];
+          return (
+            <CategoryPreview key={title} title={title} products={products} />
+          );
+        })
+      )}
     </>
   );
 };
