@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './category.scss';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/product-card/ProductCard';
 import { useSelector } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
+import { CategoryCardContainer, TitleText } from './category.style';
 
 const Category = () => {
   const categoriesMap = useSelector((state) => state.categories.categoriesMap);
@@ -17,16 +17,16 @@ const Category = () => {
 
   return (
     <>
-      <h2 className="title-text">{category}</h2>
+      <TitleText>{category}</TitleText>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="category-card-container">
+        <CategoryCardContainer>
           {products &&
             products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
-        </div>
+        </CategoryCardContainer>
       )}
     </>
   );

@@ -1,13 +1,13 @@
 import Register from '../../components/register/Register';
 import Login from '../../components/login/Login';
-import './auth.scss';
+import { AuthenticationContainer } from './auth.style';
 
 const Authentication = () => {
   return (
-    <div className="authentication-container">
+    <AuthenticationContainer>
       <Login />
       <Register />
-    </div>
+    </AuthenticationContainer>
   );
 };
 
