@@ -7,6 +7,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  User,
+  NextOrObserver,
 } from 'firebase/auth';
 import {
   doc,
@@ -17,7 +19,9 @@ import {
   writeBatch,
   query,
   getDocs,
+  QueryDocumentSnapshot,
 } from 'firebase/firestore';
+import { CategoryMap } from '../../redux/constants/categoriesConstant';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -47,7 +51,13 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 
 // Add a new document to the database
-export const addCollectionAndDocument = async (collectionKey, objectToAdd) => {
+export type ObjectToAdd = {
+  title: string;
+};
+export const addCollectionAndDocument = async <T extends ObjectToAdd>(
+  collectionKey: string,
+  objectToAdd: T[]
+): Promise<void> => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
 
@@ -63,20 +73,34 @@ export const addCollectionAndDocument = async (collectionKey, objectToAdd) => {
 export const getCollectionAndDocument = async () => {
   const collectionRef = collection(db, 'categories');
   const uniqueQuery = query(collectionRef);
+
   const querySnapShop = await getDocs(uniqueQuery);
+
   const categoryMap = querySnapShop.docs.reduce((acc, docSnapShot) => {
     const { title, items } = docSnapShot.data();
     acc[title.toLowerCase()] = items;
     return acc;
-  }, {});
+  }, {} as CategoryMap);
   return categoryMap;
 };
 
 // Create a user with google sign In
+export type AdditionalDetails = {
+  displayName?: string;
+};
+
+export type UserData = {
+  createdAt: Date;
+  displayName: string;
+  email: string;
+};
+
 export const createUserDocumentFromAuth = async (
-  userAuth,
-  additionalDetails
-) => {
+  userAuth: User,
+  additionalDetails = {} as AdditionalDetails
+): Promise<void | QueryDocumentSnapshot<UserData>> => {
+  if (!userAuth) return;
+
   const userRef = doc(db, 'users', userAuth.uid);
   const userSnapShot = await getDoc(userRef);
 
@@ -94,19 +118,25 @@ export const createUserDocumentFromAuth = async (
       console.error(error);
     }
   }
-  return userSnapShot;
+  return userSnapShot as QueryDocumentSnapshot<UserData>;
 };
 
 // Create a user with email and password
 
-export const createAuthWithEmailAndPassword = async (email, password) => {
+export const createAuthWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 // Log a user In with email and password
-export const signInAuthWithEmailAndPassword = async (email, password) => {
+export const signInAuthWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
@@ -116,11 +146,11 @@ export const signInAuthWithEmailAndPassword = async (email, password) => {
 export const signUserOut = async () => await signOut(auth);
 
 // leverage the single thread to create observer and manage user account for optimization
-export const onAuthStateChangedListener = (callback) =>
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>
   onAuthStateChanged(auth, callback);
 
 // leverage the single thread to convert from observer to redux saga for memoization
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,
