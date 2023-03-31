@@ -9,6 +9,7 @@ import {
   AdditionalDetails,
   UserData,
 } from '../../../utils/firebase/Firebase.config';
+import { User } from 'firebase/auth';
 
 // creating types for user action
 export type CheckUserSession = Action<USER_ACTION_TYPES.CHECK_USER_SESSION>;
@@ -42,7 +43,7 @@ export type SignUpStart = ActionWithPayload<
 
 export type SignUpSuccess = ActionWithPayload<
   USER_ACTION_TYPES.SIGN_UP_SUCCESS,
-  { user: UserData; additionalDetails: AdditionalDetails }
+  { user: User; additionalDetails: AdditionalDetails }
 >;
 
 export type SignUpFailed = ActionWithPayload<
@@ -74,7 +75,7 @@ export const emailSignInStart = withMatcher(
     actionCreator(USER_ACTION_TYPES.EMAIL_SIGN_IN_REQUEST, { email, password })
 );
 
-export const signInSuccess = withMatcher((user: UserData) =>
+export const signInSuccess = withMatcher((user: UserData & { id: string }) =>
   actionCreator(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user)
 );
 
@@ -93,7 +94,7 @@ export const signUpStart = withMatcher(
 );
 
 export const signUpSuccess = withMatcher(
-  (user: UserData, additionalDetails: AdditionalDetails): SignUpSuccess =>
+  (user: User, additionalDetails: AdditionalDetails): SignUpSuccess =>
     actionCreator(USER_ACTION_TYPES.SIGN_UP_SUCCESS, {
       user,
       additionalDetails,
