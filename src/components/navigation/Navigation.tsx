@@ -1,15 +1,15 @@
-import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { ReactComponent as CrownLogo } from '../../assests/crown.svg';
 import ShoppingCart from '../cart-icon/CartIcon';
 import CartDropDown from '../cart-dropdown/CartDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsCartOpen } from '../../redux/actions/cart/cartSelector';
 import { signOutStart } from '../../redux/actions/user/userAction';
+import { ReactComponent as CrownLogo } from '../../assests/crown.svg';
 import './navigation.scss';
+import { RootState } from '../../redux/configureStore';
 
 const Navigation = () => {
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const isCartOpen = useSelector(selectIsCartOpen);
   const dispatch = useDispatch();
 

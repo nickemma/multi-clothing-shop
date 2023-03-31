@@ -1,5 +1,3 @@
-import React from 'react';
-import './checkout-item.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems } from '../../redux/actions/cart/cartSelector';
 import {
@@ -7,6 +5,7 @@ import {
   addToCartItem,
   removeToCartItem,
 } from '../../redux/actions/cart/cartAction';
+import './checkout-item.scss';
 
 const CheckoutItem = ({ cartItem }) => {
   const { name, imageUrl, quantity, price } = cartItem;

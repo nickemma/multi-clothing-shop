@@ -1,5 +1,3 @@
-import React from 'react';
-import './cart-icon.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as ShoppingCart } from '../../assests/shopping-bag.svg';
 import {
@@ -7,6 +5,7 @@ import {
   selectCartCount,
 } from '../../redux/actions/cart/cartSelector';
 import { setIsCartOpen } from '../../redux/actions/cart/cartAction';
+import { CartIconContainer, ItemCount } from './cart-icon.style';
 
 const CartIcon = () => {
   const cartCount = useSelector(selectCartCount);
@@ -15,10 +14,10 @@ const CartIcon = () => {
 
   const toggleCartHandler = () => dispatch(setIsCartOpen(!isCartOpen));
   return (
-    <div className="cart-icon-container" onClick={toggleCartHandler}>
+    <CartIconContainer onClick={toggleCartHandler}>
       <ShoppingCart className="shopping-icon" />
-      <span className="item-count">{cartCount}</span>
-    </div>
+      <ItemCount>{cartCount}</ItemCount>
+    </CartIconContainer>
   );
 };
 

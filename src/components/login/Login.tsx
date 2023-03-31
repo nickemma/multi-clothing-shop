@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { AuthErrorCodes, AuthError } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import FormInput from '../form-input/FormInput';
 import { useDispatch } from 'react-redux';
@@ -25,7 +26,7 @@ const Login = () => {
   const [formField, setFormField] = useState(initialState);
   const { email, password } = formField;
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormField({ ...formField, [name]: value });
   };
@@ -34,7 +35,7 @@ const Login = () => {
     setFormField(initialState);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       dispatch(emailSignInStart(email, password));
@@ -42,9 +43,9 @@ const Login = () => {
       resetForm();
       navigate('/');
     } catch (error) {
-      if (error.code === 'auth/wrong-password') {
+      if ((error as AuthError).code === AuthErrorCodes.INVALID_PASSWORD) {
         alert('Invalid credentials');
-      } else if (error.code === 'auth/user-not-found') {
+      } else if ((error as AuthError).code === AuthErrorCodes.USER_DELETED) {
         alert('Invalid credentials');
       } else {
         console.error(error);

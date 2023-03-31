@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { AuthError, AuthErrorCodes } from 'firebase/auth';
 import FormInput from '../form-input/FormInput';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -19,7 +20,7 @@ const Register = () => {
   const [formField, setFormField] = useState(initialState);
   const { displayName, email, password, confirmPassword } = formField;
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormField({ ...formField, [name]: value });
   };
@@ -28,7 +29,7 @@ const Register = () => {
     setFormField(initialState);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('Password does not match');
@@ -44,7 +45,7 @@ const Register = () => {
       resetForm();
       navigate('/');
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
+      if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
         alert('User already exist');
       } else {
         console.error(error);
