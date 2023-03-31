@@ -21,7 +21,7 @@ import {
   getDocs,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { CategoryMap } from '../../redux/constants/categoriesConstant';
+import { Category } from '../../redux/constants/categoriesConstant';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -80,7 +80,7 @@ export const getCollectionAndDocument = async () => {
     const { title, items } = docSnapShot.data();
     acc[title.toLowerCase()] = items;
     return acc;
-  }, {} as CategoryMap);
+  }, {} as Category[]);
   return categoryMap;
 };
 
