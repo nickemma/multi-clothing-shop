@@ -6,7 +6,7 @@ export const BaseButton = styled.button`
   height: 50px;
   letter-spacing: 0.5px;
   line-height: 50px;
-  padding: 0 35px 0 35px;
+  padding: 0 35px;
   font-size: 15px;
   background-color: black;
   color: white;
@@ -22,6 +22,13 @@ export const BaseButton = styled.button`
     background-color: white;
     color: black;
     border: 1px solid black;
+  }
+  @media (max-width: 450px) {
+    min-width: 85px;
+    letter-spacing: 0.3px;
+    line-height: 20px;
+    padding: 0px 15px;
+    margin: 0 10px;
   }
 `;
 

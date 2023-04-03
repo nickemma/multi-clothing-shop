@@ -5,4 +5,9 @@ export const AuthenticationContainer = styled.div`
   justify-content: space-between;
   width: 900px;
   margin: 2rem auto;
+  @media (max-width: 450px) {
+    flex-direction: column;
+    overflow-x: hidden;
+    width: 300px;
+  }
 `;

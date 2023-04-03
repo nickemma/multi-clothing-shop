@@ -10,6 +10,9 @@ export const SignInContainer = styled.div`
   span {
     font-size: 1.2rem;
   }
+  @media (max-width: 450px) {
+    margin: 1.3rem 0;
+  }
 `;
 
 export const ButtonsContainer = styled.div`

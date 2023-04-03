@@ -27,3 +27,13 @@
     }
   }
 }
+
+// media queries for responsive design
+
+@media screen and (max-width: 450px) {
+  .navigation {
+    .nav-links-container {
+      width: 80%;
+    }
+  }
+}
